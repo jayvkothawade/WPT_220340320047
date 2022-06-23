@@ -1,0 +1,91 @@
+<html>
+
+	<body>
+
+
+
+		<input type="text" id="bookid" placeholder="bookid"/>
+		<p id="message"></p> <br>
+		<input type="text" id="bookname" placeholder="bookname"/> <br>
+		<input type="text" id="price" placeholder="price"/> <br>
+		<input type="button" value="Update" id="update" name="update"
+		
+	</body>
+
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+
+
+$(document).ready(function()
+{
+console.log("no more sins");
+$("#bookname").blur(() => {
+	console.log("Blur occured");
+	let ip={input:$("#bookid").val()};
+	console.log(ip);
+
+	let params={
+		data : ip,
+		url : "localhost:8081/bookinfo",
+		type : 'get',
+		datatype : "json",
+		success :(datafound)=>{
+			if(datafound.status==true)
+			{
+				console.log(Book details found);
+				$("#bookname").val(datafound.details[0].bookname);
+				$("#price").val(datafound.details[0].price);
+				$("#message").text("Book details found");
+			}
+			else{
+				$("#message").text("Book details not found");
+			}
+		}
+		error : (datanotfound)=>{
+			console.log("Failure Occured");
+		}
+	};
+
+	$.ajax(params);
+});
+
+$("#update").click(() => {
+	console.log("click occured");
+	let input={bookid: $('#bookid').val(), price: $('#price').val()}
+
+	let paramsup={
+		data : ip,
+		url : "localhost:8081/updateprice",
+		type : 'get',
+		datatype : "json",
+		success: (datafromserver) => {if (datafromserver)=== true){
+			console.log("Book price updated");
+			$("#message").text("book price updated");}
+			else{
+				console.log("Bookprice not updated");
+				$("#message").text("book price not updated");
+			} 
+		}
+		error:(errorfromserver) => {
+			console.log(error);
+		}
+
+		$.ajax(paramsup);
+	})
+
+
+
+// 		//console.log("jquery works");
+// 		alert("jquery works")
+// 	});
+	
+// });
+
+
+</script>
+
+
+
+</html>
